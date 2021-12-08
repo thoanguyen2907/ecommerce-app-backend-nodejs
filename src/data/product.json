@@ -1,0 +1,119 @@
+[ 
+  {
+   
+    "name": "CELINE MONOCHROMS 03 SUNGLASSES IN ACETATE NAVY BLUE",
+    "color" : ["black","blue"],
+    "price" : 120,
+    "description":"At CELINE the idea of Parisian chic, with savoir-faire and the finest quality",
+    "like" : 30,
+    "category" : "61ad29d4520b1921c2c33fb8",
+    "productImg": "https://i.postimg.cc/N0HsJK7d/celine-01.jpg",
+    "virtualImg": "https://i.postimg.cc/bNwzXC9D/v1.png", 
+    "popular" : true,
+    "brand" : "Celine",
+    "newArrival": true,
+    "size" : ["s","m"]
+  },
+
+  {
+   
+    "name": "CLUBMASTER CLASSIC",
+    "color" : ["black", "blue", "yellow"],
+    "price" : 145,
+    "description":"Ray-Ban Clubmaster Classic sunglasses are retro and timeless. Inspired by the 50’s, the unmistakable design of the Clubmaster Classic is worn by cultural intellectuals",
+    "like" : 30,
+    "category" : "61ad29c4520b1921c2c33fb6",
+    "productImg": "https://i.postimg.cc/RZj9HM5K/celine-02.jpg",
+    "virtualImg": "https://i.postimg.cc/LXVMwLq3/v3.png", 
+    "popular" : true,
+    "brand" : "Ray-Ban",
+    "newArrival": true,
+    "size" : ["s","m", "xs"]
+  },
+  {
+    "name": "STATE STREET",
+    "color" : ["black", "grey"],
+    "price" : 145,
+    "description":"Ray-Ban Clubmaster Classic sunglasses are retro and timeless. Inspired by the 50’s, the unmistakable design of the Clubmaster Classic is worn by cultural intellectuals",
+    "like" : 30,
+    "category" : "61ad29c4520b1921c2c33fb6",
+    "productImg": "https://i.postimg.cc/593Cqrt6/rayban-03.jpg",
+    "virtualImg": "https://i.postimg.cc/WbYqxJgV/v4.png", 
+    "popular" : false,
+    "brand" : "Ray-Ban",
+    "newArrival": true,
+    "size" : ["s", "xs"]
+  },
+  {
+   
+    "name": "HEXAGONAL FLAT LENSES",
+    "color" : ["brown", "grey", "light blue", "gold"],
+    "price" : 145,
+    "description":"Ray-Ban Clubmaster Classic sunglasses are retro and timeless. Inspired by the 50’s, the unmistakable design of the Clubmaster Classic is worn by cultural intellectuals",
+    "like" : 30,
+    "category" : "61ad29d4520b1921c2c33fb8",
+    "productImg": "https://i.postimg.cc/qqbgf9tw/rayban-02.jpg",
+    "virtualImg": "https://i.postimg.cc/0yJj3X9G/v6.png", 
+    "popular" : false,
+    "brand" : "Ray-Ban",
+    "newArrival": false,
+    "size" : ["s", "m", "l"]
+  }
+  ,
+  {
+    "name": "SQUARE SUNGLASSES",
+    "color" : ["purple","black", "green"],
+    "price" : 235,
+    "description": "CHANEL sunglasses and shop shades in square, round, cat eye, shield and more styles.",
+    "like" : 30,
+    "category" : "61ad29d4520b1921c2c33fb8",
+    "productImg": "https://i.postimg.cc/brBYVkMF/gucci-03.jpg",
+    "virtualImg": "https://i.postimg.cc/Dwsf5WcB/v8.png",
+    "popular" : false,
+    "brand" : "Chanel",
+    "newArrival": true,
+    "size" : ["s", "m", "xs"]
+  },
+  {
+    "name": "Butterfly Sunglasses CH5458",
+    "color" : ["black", "green", "gold"],
+    "price" : 345,
+    "description": "CHANEL sunglasses and shop shades in square, round, cat eye, shield and more styles.",
+    "like" : 30,
+    "category" : "61ad29d4520b1921c2c33fb8",
+    "productImg": "https://i.postimg.cc/RFCMMgxD/rayban-04.jpg",
+    "virtualImg": "https://i.postimg.cc/nrCpmMzK/v9.png", 
+    "popular" : true,
+    "brand" : "Chanel",
+    "newArrival": true,
+    "size" : ["s", "m", "l"]
+  },
+  {
+    "name": "Aviator sunglasses",
+    "color" : ["brown","gold"],
+    "price" : 200,
+    "description": "Introduced as part of the Epilogue collection, these sunglasses bring bold, rich colours to the forefront and are contrasted by shiny gold toned metal details",
+    "like" : 10,
+    "category" : "61ad29c4520b1921c2c33fb6",
+    "productImg": "https://i.postimg.cc/brBYVkMF/gucci-03.jpg",
+    "virtualImg": "https://i.postimg.cc/0yJj3X9G/v6.png", 
+    "popular" : true,
+    "brand" : "Gucci",
+    "newArrival": true,
+    "size" : ["s", "m"]
+  },
+  {
+    "name": "WeeFarers Baby Sunglasses",
+    "color" : ["blue","green"],
+    "price" : 110,
+    "description": "Polarized sunglasses for babies and kids ages 0 up to 3 years old - includes a protective carrying pouch and easily adjustable strap! The iconic look, now reimagined for young eyes. Polarized lenses that reduce eye strain and minimize glare from the ultraviolet rays of the sun.",
+    "like" : 10,
+    "category" : "61ad29e1520b1921c2c33fba",
+    "productImg": "https://i.postimg.cc/Z5rZpGTQ/gucci-02.jpg",
+    "virtualImg": "https://i.postimg.cc/tg2Kzy8B/v2.png",
+    "popular" : true,
+    "brand" : "Ray-Ban",
+    "newArrival": true,
+    "size" : ["s", "m"]
+  }
+]

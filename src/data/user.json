@@ -1,0 +1,58 @@
+[
+    {
+        "lastName": "Alex", 
+        "firstName": "Nguyen",
+        "email": "alex@gmail.com", 
+        "phone": "012123412",
+        "password": "123123",
+        "role": "user" 
+    },
+    {
+        "lastName": "Anna", 
+        "firstName": "Nguyen",
+        "email": "anna.nguyen@gmail.com", 
+         "phone": "0121442255",
+         "password": "123123",
+         "role": "user" 
+    },
+    {
+        "lastName": "Alice", 
+        "firstName": "Nguyen",
+        "email": "alice.nguyen@gmail.com", 
+         "phone": "12010020022",
+         "password": "123123",
+         "role": "admin" 
+    },
+    {
+        "lastName": "Tam", 
+        "firstName": "Nguyen",
+        "email": "tam.nguyen@gmail.com", 
+         "phone": "02000330022",
+         "password": "123123", 
+         "role": "admin" 
+    }, 
+    {
+        "lastName": "Truc", 
+        "firstName": "Nguyen",
+        "email": "truc.nguyen@gmail.com", 
+         "phone": "0033552266",
+         "password": "123123",
+         "role": "admin" 
+    },
+    {
+        "lastName": "Huy", 
+        "firstName": "Nguyen",
+        "email": "huy.nguyen@gmail.com", 
+         "phone": "0033552266",
+         "password": "123123",
+         "role": "user" 
+    },
+    {
+        "lastName": "Phuc", 
+        "firstName": "Nguyen",
+        "email": "phuc.nguyen@gmail.com", 
+         "phone": "0033552266",
+         "password": "123123",
+         "role": "user" 
+    }
+]

@@ -1,0 +1,34 @@
+[
+    {
+
+        "name": "iphone 6",
+        "category": "phone",
+        "price": 400,
+        "dislike": 1,
+        "like": 10  
+    },
+    {
+
+        "name": "iphone 7",
+        "category": "phone",
+        "price": 600,
+        "dislike": 1,
+        "like": 11  
+    }, 
+    {
+
+        "name": "iphone 8",
+        "category": "phone",
+        "price": 700,
+        "dislike": 4,
+        "like": 11  
+    }, 
+    {
+        "name": "iphone 8 pl",
+        "category": "phone",
+        "price": 800,
+        "dislike": 1,
+        "like": 11  
+    }
+
+]

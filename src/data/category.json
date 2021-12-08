@@ -1,0 +1,20 @@
+[
+	{
+		"_id" 		: "61ad29c4520b1921c2c33fb6",
+		"name" 		: "Sunglasses for men",
+		"title" 	: "Sunglasses for men",
+		"slug"		: "men-sunglasses"	
+	},
+	{
+		"_id" 		: "61ad29d4520b1921c2c33fb8",
+		"name" 		: "Sunglasses for women",
+		"title" 	: "Sunglasses for women",
+		"slug"		: "women-sunglasses"	
+	},
+	{
+		"_id" 		: "61ad29e1520b1921c2c33fba",
+		"name" 		: "Sunglasses for children",
+		"title" 	: "Sunglasses for children",
+		"slug"		: "children-sunglasses"	
+	}
+]
