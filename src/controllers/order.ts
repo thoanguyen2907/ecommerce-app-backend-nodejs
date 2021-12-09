@@ -11,28 +11,30 @@ export const createOrder = async (
   next: NextFunction
 ) => {
   try {
-    const { user, product} = await req.body
+    const { user, products} = await req.body
     const quantity = 1
 
-    const order = new Order({
-      user,
-      product,
-      quantity
-    })
+    const order = new Order({user, products})
      const userOrderList = await OrderService.getOrderByUserId(user)
-     console.log(userOrderList)
+    // console.log(userOrderList)
+   const productList =  userOrderList.map((item) => {
+     return item.products
+   })
+   productList.map(async (item) => {
+     console.log(item)
+    //  const isExistProduct = await OrderService.findById(item.product.id)
+   })
+   console.log(productList)
+  // const indexProductOrder = await productList.findIndex((item) => item.product.id === products.product)
+  //  console.log(indexProductOrder)
 
-  //  const productList =  userOrderList.map((item) => {
-  //    return item.product
-  //  })
-  //  console.log(productList)
-  //  productList.findIndex((item) => item.id === product)
-
-    await OrderService.create(order)
-    res.status(200).json({
-      status: 200, 
-      data: order
-    })
+    // await OrderService.create(order)
+    // res.status(200).json({
+    //   status: 200, 
+    //   data: order
+    // })
+   
+   
 
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {

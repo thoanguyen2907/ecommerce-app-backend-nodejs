@@ -7,7 +7,7 @@ const create = async (order: OrderDocument): Promise<OrderDocument> => {
 
 const findById = async (orderId: string): Promise<OrderDocument> => {
 
-  const foundOrder = await Order.findById(orderId).populate({path: 'user product'})
+  const foundOrder = await Order.findById(orderId).populate({path: 'users'}).populate({path: 'products.product'})
 
   if (!foundOrder) {
     throw new NotFoundError(`order ${orderId} not found`)
@@ -34,11 +34,11 @@ const findAll = async (query: any): Promise<OrderDocument[]> => {
   }
   if(query.sort) {
     sort = query.sort.split(',').join(' ')
-}
+} 
   const page = parseInt(query.page)
   const limit = parseInt(query.limit)
   const skip = (page-1)*limit
-  return Order.find(find).populate({path: 'user product'}).select(select).sort(sort).skip(skip).limit(limit)
+  return Order.find(find).populate({path: 'user'}).populate({path: 'products.product'}).select(select).sort(sort).skip(skip).limit(limit)
 }
 
 const update = async (
@@ -69,16 +69,16 @@ const deleteOrder = async (
 }
 
 const increaseQuant = async (orderId: any): Promise<OrderDocument | null | undefined>  => { 
-      return await Order.findByIdAndUpdate(orderId, {$inc: {quantity: 1}}, {new: true }).populate({path: 'user product'})
+      return await Order.findByIdAndUpdate(orderId, {$inc: {quantity: 1}}, {new: true }).populate({path: 'users'}).populate({path: 'products.products'})
 
     }
  const decreaseQuant = async (orderId: any): Promise<OrderDocument | null | undefined>  => { 
-  return await Order.findByIdAndUpdate(orderId, {$inc: {quantity: -1}}, {new: true }).populate({path: 'user product'})
+  return await Order.findByIdAndUpdate(orderId, {$inc: {quantity: -1}}, {new: true }).populate({path: 'users'}).populate({path: 'products.products'})
 
 }
 
 const getOrderByUserId = async (userId: any): Promise<OrderDocument[]> => {
-  return await Order.find({'user': userId}).populate({path: 'user product'})
+  return await Order.find({'user': userId}).populate({path: 'user'}).populate({path: 'products.product'})
 }
 
 

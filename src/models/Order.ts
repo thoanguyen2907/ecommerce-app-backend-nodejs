@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 import mongoose, { Document } from 'mongoose'
+type ProductInCart = {
+  product: string,
+  quantity?:  number
+}
 
 export type OrderDocument = Document & {
   user: string,
-  product:  string,
-  quantity?:  number
+  products:  ProductInCart
 }
 
 const orderSchema = new mongoose.Schema({
@@ -12,13 +15,19 @@ const orderSchema = new mongoose.Schema({
     ref: 'users',
     type: mongoose.Schema.Types.ObjectId
   },
-  product: {
-    type: mongoose.Schema.Types.ObjectId,  
-    ref: 'products'
-  },
-  quantity: {
-  type: Number
-}
+  products: [
+    {
+    _id: false ,
+    product: {
+      type: mongoose.Schema.Types.ObjectId,  
+      ref: 'products'
+    },
+    quantity: {
+      type: Number,
+      default: 1
+    }
+   }],
+
 })
 
 orderSchema.virtual('users', {
