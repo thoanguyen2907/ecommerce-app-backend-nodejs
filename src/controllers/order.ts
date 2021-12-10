@@ -20,19 +20,18 @@ export const createOrder = async (
    const productList =  userOrderList.map((item) => {
      return item.products
    })
-   productList.map(async (item) => {
+   console.log({productList})
+   productList.map((item) => {
      console.log(item)
-    //  const isExistProduct = await OrderService.findById(item.product.id)
    })
-   console.log(productList)
-  // const indexProductOrder = await productList.findIndex((item) => item.product.id === products.product)
-  //  console.log(indexProductOrder)
+  //  const indexProductOrder = await productList.findIndex((item) => item.product === products.product)
+  //   console.log(indexProductOrder)
 
-    // await OrderService.create(order)
-    // res.status(200).json({
-    //   status: 200, 
-    //   data: order
-    // })
+    await OrderService.create(order)
+    res.status(200).json({
+      status: 200, 
+      data: order
+    })
    
    
 
