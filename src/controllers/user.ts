@@ -13,29 +13,31 @@ export const createUser = async (
 ) => {
   try {
     const result = await validationResult(req)
+
     if (!result.isEmpty()) {
       const errors = await result.array()
+     
       const messages = await validation.showErrors(errors)    
       res.status(400).json({
           success : false,
           data : messages
       })
       return        
-    }
-    const { lastName, firstName, email, phone, password } = req.body
-
-    const user = new User({
-      lastName,
-      firstName,
-      email,
-      phone,
-      password,
-      role: 'user'
-    })
+    } else {
+      const { lastName, firstName, email, phone, password } = req.body
+      const user = new User({
+        lastName,
+        firstName,
+        email,
+        phone,
+        password,
+        role: 'user'
+      })
 
     const newUser = await UserService.create(user)
     const token = await newUser.getJwtToken()
    return res.json({ newUser,token})
+    }
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))

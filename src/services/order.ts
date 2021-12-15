@@ -1,9 +1,20 @@
+import { ProductInCart } from './../models/Order'
 import Order, { OrderDocument } from '../models/Order'
 import { NotFoundError } from '../helpers/apiError'
 
 const create = async (order: OrderDocument): Promise<OrderDocument> => {
   return order.save()
 }
+// const updateQuantityProductOrder = (productList:  ProductInCart[],  indexProductOrder: number,
+//   order: OrderDocument): Promise<OrderDocument> => {
+//   if(productList[indexProductOrder].quantity) {
+//     productList[indexProductOrder].quantity += 1
+//     //  console.log( productList[indexProductOrder].quantity)
+     
+//   }
+//   return order.save()
+
+//}
 
 const findById = async (orderId: string): Promise<OrderDocument> => {
 
@@ -55,6 +66,13 @@ const update = async (
 
   return foundOrder
 }
+const updateQuantityProductOrder = async (
+  orderId: string
+): Promise<OrderDocument | null> => {
+  return await Order.findByIdAndUpdate(orderId, {$inc: {'products.quantity': 1}}, {
+    new: true,
+  })
+}
 
 const deleteOrder = async (
   orderId: string
@@ -69,11 +87,11 @@ const deleteOrder = async (
 }
 
 const increaseQuant = async (orderId: any): Promise<OrderDocument | null | undefined>  => { 
-      return await Order.findByIdAndUpdate(orderId, {$inc: {quantity: 1}}, {new: true }).populate({path: 'users'}).populate({path: 'products.products'})
+      return await Order.findByIdAndUpdate(orderId, {$inc: {'products.quantity': 1}}, {new: true }).populate({path: 'users'}).populate({path: 'products.products'})
 
     }
  const decreaseQuant = async (orderId: any): Promise<OrderDocument | null | undefined>  => { 
-  return await Order.findByIdAndUpdate(orderId, {$inc: {quantity: -1}}, {new: true }).populate({path: 'users'}).populate({path: 'products.products'})
+  return await Order.findByIdAndUpdate(orderId, {$inc: {'products.quantity': -1}}, {new: true }).populate({path: 'users'}).populate({path: 'products.products'})
 
 }
 
@@ -92,5 +110,6 @@ export default {
   deleteOrder,
   increaseQuant,
   decreaseQuant,
-  getOrderByUserId
+  getOrderByUserId,
+  updateQuantityProductOrder
 }

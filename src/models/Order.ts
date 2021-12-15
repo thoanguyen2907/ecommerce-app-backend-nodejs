@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 import mongoose, { Document } from 'mongoose'
-type ProductInCart = {
-  product: string,
-  quantity?:  number
+import { ProductDocument } from './Product'
+export type ProductInCart = {
+  product: ProductDocument,
+  quantity:  number,
+  size: string,
+  color: string
 }
 
 export type OrderDocument = Document & {
@@ -23,8 +26,16 @@ const orderSchema = new mongoose.Schema({
     quantity: {
       type: Number,
       default: 1
-    }
-   },
+    },
+    size: {
+      type: String,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
+   }
 
 })
 

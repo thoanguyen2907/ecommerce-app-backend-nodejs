@@ -13,7 +13,7 @@ interface PayloadType {
         password: string
         role: string
 }
-export const project =  async  (req: Request,res: Response,next: NextFunction) => {
+export const protect =  async  (req: Request,res: Response,next: NextFunction) => {
         let token = ''
         if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
                 token = req.headers.authorization.split(' ')[1]

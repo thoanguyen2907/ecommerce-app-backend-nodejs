@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express'
 import Order from '../models/Order'
 import OrderService from '../services/order'
 import { BadRequestError } from '../helpers/apiError'
+import { check, validationResult } from 'express-validator'
+import  validation from '../validates/Order'
 
 // POST /movies
 export const createOrder = async (
@@ -12,30 +14,36 @@ export const createOrder = async (
 ) => {
   try {
     const { user, products} = await req.body
-    const quantity = 1
-
-    const order = new Order({user, products})
-     const userOrderList = await OrderService.getOrderByUserId(user)
-    // console.log(userOrderList)
-   const productList =  userOrderList.map((item) => {
-     return item.products
-   })
-   console.log({productList})
-   productList.map((item) => {
-     console.log(item)
-   })
-  //  const indexProductOrder = await productList.findIndex((item) => item.product === products.product)
-  //   console.log(indexProductOrder)
-
-    await OrderService.create(order)
-    res.status(200).json({
-      status: 200, 
-      data: order
-    })
-   
-   
-
-  } catch (error) {
+    const result = await validationResult(req)
+    if (!result.isEmpty()) {
+      const errors = result.array()
+      const messages = await validation.showErrors(errors)    
+     
+      return  res.status(400).json({
+          success : false,
+          data : messages
+      })
+    
+    } else {
+      const order = new Order({user, products})
+      const userOrderList = await OrderService.getOrderByUserId(user)
+    const productOrder = await userOrderList.find((item) => item.products.product._id == products.product)
+    if(!productOrder) {
+       await OrderService.create(order)
+       return res.status(200).json({
+         status: 200, 
+         data: order
+       })
+     } else { 
+     const orderUpdateQuantity = await OrderService.updateQuantityProductOrder(productOrder._id)
+     return res.status(200).json({
+       status: 200, 
+       data: orderUpdateQuantity
+     })
+      }
+    }
+   }
+   catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
     } else {
