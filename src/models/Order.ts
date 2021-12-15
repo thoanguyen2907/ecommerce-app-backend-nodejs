@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 import mongoose, { Document } from 'mongoose'
+import { ProductDocument } from './Product'
+export type ProductInCart = {
+  product: ProductDocument,
+  quantity:  number,
+  size: string,
+  color: string
+}
 
 export type OrderDocument = Document & {
   user: string,
-  product:  string,
-  quantity?:  number
+  products:  ProductInCart
 }
 
 const orderSchema = new mongoose.Schema({
@@ -12,13 +18,25 @@ const orderSchema = new mongoose.Schema({
     ref: 'users',
     type: mongoose.Schema.Types.ObjectId
   },
-  product: {
-    type: mongoose.Schema.Types.ObjectId,  
-    ref: 'products'
-  },
-  quantity: {
-  type: Number
-}
+  products: {
+    product: {
+      type: mongoose.Schema.Types.ObjectId,  
+      ref: 'products'
+    },
+    quantity: {
+      type: Number,
+      default: 1
+    },
+    size: {
+      type: String,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
+   }
+
 })
 
 orderSchema.virtual('users', {

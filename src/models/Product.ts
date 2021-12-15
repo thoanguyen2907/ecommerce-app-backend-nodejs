@@ -78,7 +78,7 @@ const productSchema = new mongoose.Schema({
 }
 )
 
-productSchema.virtual('orders', {
+productSchema.virtual('', {
 	ref: 'orders', //The Model to use
 	localField: '_id', //Find in Model, where localField 
 	foreignField: 'product', // is equal to foreignField

@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express'
 import Product from '../models/Product'
 import ProductService from '../services/product'
 import { BadRequestError } from '../helpers/apiError'
+import { check, validationResult } from 'express-validator'
+import  validation from '../validates/Products'
 
 // POST /movies
 export const createProduct = async (
@@ -13,31 +15,37 @@ export const createProduct = async (
   try {
     const { name, category, price, description, brand, size, color, productImg,
       popular, newArrival, virtualImg } = req.body
-    const like = 0
-    const dislike = 0
-
-    const product = new Product({
-      name,
-      category,
-      price,
-      description, 
-      brand, 
-      size,
-      color,
-      productImg,
-      like,
-      dislike,
-      newArrival,
-      popular,
-      virtualImg
-    })
-
-    await ProductService.create(product)
+      const result = await validationResult(req)
+      if (!result.isEmpty()) {
+        const errors = result.array()
+        const messages = await validation.showErrors(errors)    
+       
+        res.status(400).json({
+            success : false,
+            data : messages
+        })
+        return       
+      } else {
+        const product = new Product({
+          name,
+          category,
+          price,
+          description, 
+          brand, 
+          size,
+          color,
+          productImg,
+          newArrival,
+          popular,
+          virtualImg
+        })
+        await ProductService.create(product)
+        res.status(200).json({
+          status: 200, 
+          data: product
+        })
+      }
     
-    res.status(200).json({
-      status: 200, 
-      data: product
-    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))

@@ -26,6 +26,53 @@ export default{
         .isFloat({ min: 80, max: 1500})
         .withMessage(`Price is not empty and must be a number. Price should be from ${options.price.min}`)
     },
+
+    checkSize:  () => {
+        return check('size')
+        .notEmpty()
+        .isArray()
+        .withMessage('Size is not empty and must be an array')
+    },
+
+    checkColor:  () => {
+        return check('color')
+        .notEmpty()
+        .isArray()
+        .withMessage('Color is not empty and must be an array')
+    },
+    checkDescription:  () => {
+        return check('description')
+        .notEmpty()
+        .withMessage('Description is not empty')
+    },
+    checkPopular :  () => {
+        return check('popular')
+        .notEmpty()
+        .isBoolean()
+        .withMessage('Popular is not empty and must be a boolean')
+    },
+    checkNewArrival :  () => {
+        return check('newArrival')
+        .notEmpty()
+        .isBoolean()
+        .withMessage('New arrival is not empty and must be a boolean')
+    },  
+    checkProductImg :  () => {
+        return check('productImg')
+        .notEmpty()
+        .withMessage('Product image is not empty')
+    },
+    checkVirtualImg :  () => {
+        return check('virtualImg')
+        .notEmpty()
+        .withMessage('Virtual image is not empty')
+    },
+    checkBrand :  () => {
+        return check('brand')
+        .notEmpty()
+        .withMessage('Brand is not empty')
+    },
+
     showErrors : async (errors: any) => {
             const messages: any  = {}
         await errors.map((err: ErrorProperty) => {

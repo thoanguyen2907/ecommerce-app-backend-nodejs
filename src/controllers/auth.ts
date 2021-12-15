@@ -1,9 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
-
+import UserService from '../services/user'
 import User from '../models/User'
 import AuthService from '../services/auth'
 import { BadRequestError } from '../helpers/apiError'
 import jwt from 'jsonwebtoken'
+import  {validationResult } from 'express-validator'
+import validation from '../validates/products'
+import crypto from 'crypto'
+import { sendEmail } from '../util/sendEmail'
 
 interface JwtPayload {
   id: string
@@ -16,6 +20,53 @@ const saveCookieResponse = (res: any, statusCode: any, token: any) => {
   }
    res.cookie('token', token, options)
 }
+export const registerAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { lastName, firstName, email, phone, password} = req.body
+    const result = await validationResult(req)
+    if (!result.isEmpty()) {
+      const errors = await result.array()
+     
+      const messages = await validation.showErrors(errors)    
+      res.status(400).json({
+          success : false,
+          data : messages
+      })
+      return        
+    } else {
+      const user = new User({
+        lastName,
+        firstName,
+        email,
+        phone,
+        password,
+        role: 'admin'
+      })
+  
+      const newUser = await AuthService.register(user)
+      console.log(newUser)
+      const token = await newUser.getJwtToken()
+      if (token) {
+        saveCookieResponse(res, 201, token)
+      }
+      res.status(201).send({
+        newUser,
+        token
+      })
+    }
+  } catch (error) {
+    if (error instanceof Error && error.name == 'ValidationError') {
+      next(new BadRequestError('Invalid Request', error))
+    } else {
+      next(error)
+    }
+  }
+}
+
 
 // POST /movies
 export const registerUser = async (
@@ -25,26 +76,36 @@ export const registerUser = async (
 ) => {
   try {
     const { lastName, firstName, email, phone, password} = req.body
-
-    const user = new User({
-      lastName,
-      firstName,
-      email,
-      phone,
-      password,
-      role: 'user'
-    })
-
-    const newUser = await AuthService.register(user)
-    console.log(newUser)
-    const token = await newUser.getJwtToken()
-    if (token) {
-      saveCookieResponse(res, 201, token)
-    }
-    res.status(201).send({
-      newUser,
-      token
-    })
+    const result = await validationResult(req)
+    if (!result.isEmpty()) {
+      const errors = await result.array()
+     
+      const messages = await validation.showErrors(errors)    
+      res.status(400).json({
+          success : false,
+          data : messages
+      })
+      return        
+    } else {
+      const user = new User({
+        lastName,
+        firstName,
+        email,
+        phone,
+        password,
+        role: 'user'
+      })
+      const newUser = await AuthService.register(user)
+      console.log(newUser)
+      const token = await newUser.getJwtToken()
+      if (token) {
+        saveCookieResponse(res, 201, token)
+      }
+      res.status(201).send({
+        newUser,
+        token
+      })
+    }  
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -113,3 +174,44 @@ export const logout= async (
     }
   }
 }
+export const forgotPasswordUser =  async ( 
+  req: Request,
+  res: Response,
+  next: NextFunction
+  ) => { 
+    const result = await AuthService.forgotPassword(req.body)
+    if(!result) {
+        res.status(401).json({
+            success: true,
+            messages: 'Email is not exists'
+        })
+    } else {
+        res.status(201).json({
+            success: true,
+            data: result
+        })
+    }
+      
+}
+
+export const resetPasswordUser = async ( 
+  req: Request,
+  res: Response,
+  next: NextFunction
+  ) => {
+  const result = await AuthService.resetPassword({resetToken: req.params.resetToken, 
+    password: req.body.password
+    })
+    if(!result) {
+        res.status(401).json({
+            success: true,
+            messages: 'The reset token is not available'
+        })
+    } else {
+        res.status(201).json({
+            success: true, 
+            result
+        })
+    }
+}
+
