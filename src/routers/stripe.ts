@@ -9,21 +9,38 @@ const stripe = new Stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc',
     typescript: true
   }
 )
-
-router.post('/create-checkout-session', async (
+router.post('/payment', async (
     req: Request,
     res: Response,
     next: NextFunction
     ) => {
         console.log(req.body)
-       const purchasedItems = await req.body?.map((item: any) => {
+      stripe.charges.create({
+            source: req.body.tokenId,
+            amount: req.body.amount,
+            currency: 'eur' 
+        } )
+})
+
+  
+router.post('/create-checkout-session', async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+    ) => {
+    
+        const {order}  = req.body
+        console.log(order)
+       const purchasedItems = await req.body?.order?.map((item: any) => {
             return {
                 price_data: {
                     currency: 'usd',
+                    unit_amount: item?.price,
                     product_data: {
-                        name: item?.name
+                        name: item?.name,
+                        description: item?.description
                     },
-                    unit_amount_decimal: `${item?.price * item?.quantity * 100}`,
+                  
                
                 },
                 quantity: item?.quantity
@@ -31,7 +48,7 @@ router.post('/create-checkout-session', async (
         })
         console.log(purchasedItems)
         const session = await stripe.checkout.sessions.create({
-    
+            payment_method_types: ['card'],
             mode: 'payment',
             line_items: purchasedItems,
             success_url: 'http://localhost:3000/success',
