@@ -9,18 +9,18 @@ const stripe = new Stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc',
     typescript: true
   }
 )
-router.post('/payment', async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-    ) => {
-        console.log(req.body)
-      stripe.charges.create({
-            source: req.body.tokenId,
-            amount: req.body.amount,
-            currency: 'eur' 
-        } )
-})
+// router.post('/payment', async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+//     ) => {
+//         console.log(req.body)
+//       stripe.charges.create({
+//             source: req.body.tokenId,
+//             amount: req.body.amount,
+//             currency: 'eur' 
+//         } )
+// })
 
   
 router.post('/create-checkout-session', async (

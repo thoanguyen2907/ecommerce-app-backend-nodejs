@@ -8,10 +8,12 @@ import  {validationResult } from 'express-validator'
 import validation from '../validates/products'
 import crypto from 'crypto'
 import { sendEmail } from '../util/sendEmail'
+import {OAuth2Client} from 'google-auth-library'
 
 interface JwtPayload {
   id: string
 }
+const client = new OAuth2Client('627197289438-q9pagstkv3sk03pbssfisjqgrgidv7lo.apps.googleusercontent.com')
 
 const saveCookieResponse = (res: any, statusCode: any, token: any) => {
   const options = {
@@ -125,7 +127,7 @@ export const loginUser = async (
     const token = await AuthService.login(email, password, res)
     const {id} =  jwt.verify(token, 'abc') as JwtPayload
     const userFound = await User.findById(id)
-    console.log(userFound)
+
     if(token) {
       saveCookieResponse(res, 201, token)
     }
@@ -143,6 +145,59 @@ export const loginUser = async (
       next(error)
     }
   }
+}
+export const loginGoogle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction) => {
+    const {tokenId} = await req.body
+    client.verifyIdToken({idToken: tokenId, audience: '627197289438-q9pagstkv3sk03pbssfisjqgrgidv7lo.apps.googleusercontent.com'}).then(async (response) => {
+     
+        if (response.getPayload() && response.getPayload()?.email_verified) {
+            const email =  response.getPayload()?.email
+            const name =  response.getPayload()?.name
+           const user =  await User.findOne({email: email})
+          // console.log('user', user)
+            if(user) { 
+             req.user  = user
+             const token = await jwt.sign({ id: user._id }, 'abc', {
+            expiresIn: '2h',
+      })
+      const { _id, email, lastName , id} = user
+      return res.status(201).json({
+        success: true,
+        token,       
+        user:  { _id, email, lastName, firstName: 'Google', role: 'user', id }
+      })
+            } 
+            else {
+             const password = email+ 'ahcdada'
+             
+             const userGoogleLogin = await new User({firstName: 'Google login',lastName: name, email, password, role: 'user'})
+             console.log('userGoogleLogin', userGoogleLogin)
+             const newUser = await AuthService.register(userGoogleLogin)
+              // console.log('newUser', newUser)
+             newUser.save((err, data) => {
+               console.log('data', data)
+                const token = jwt.sign({ id: data._id }, 'abc', {
+                      expiresIn: '2h',
+                    })
+                const {_id, lastName, email, id} = newUser
+                res.status(201).json({
+                  success: true,
+                  messages: 'User via Google Login created',
+                  token,
+                  user: {_id, id, lastName, firstName: 'Google login', email, role: 'user'}
+                })
+             })
+            
+            }
+        } else {
+          res.status(401).json({
+            messages: 'Login failed'
+          })
+        }
+    })
 }
 export const aboutMe = (
   req: Request,

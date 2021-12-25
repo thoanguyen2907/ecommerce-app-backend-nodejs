@@ -13,7 +13,7 @@ const router = express.Router()
 
 // Every path we define here will get /api/v1/movies prefix
 router.get('/', protect,  authorize('admin'), findAll)
-router.get('/:userId', protect,  authorize('admin'), findById)
+router.get('/:userId', protect, findById)
 router.put('/:userId', protect,  authorize('admin'), updateUser)
 router.delete('/:userId', protect,  authorize('admin'), deleteUser)
 router.post('/',  protect,  authorize('admin'), 
