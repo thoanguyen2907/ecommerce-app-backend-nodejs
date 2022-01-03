@@ -17,7 +17,7 @@ const router = express.Router()
 router.get('/', protect, findAll)
 router.get('/:orderId',protect,  authorize('admin'), findOrderById)
 
-router.get('/user/:userId', protect,  authorize('user',  'admin'), findOrderByUserId)
+router.get('/user/:userId', protect,  authorize('user', 'admin'), findOrderByUserId)
 
 router.put('/:orderId', protect,  authorize('admin'), updateOrder)
 router.delete('/:orderId', protect,  authorize('user','admin'),  deleteOrderById)

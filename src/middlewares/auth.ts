@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../util/secrets'
 import User from '../models/User'
 interface JwtPayload {
         id: string
@@ -20,32 +21,35 @@ export const protect =  async  (req: Request,res: Response,next: NextFunction) =
         } else if(req.cookies.token){
                 token = req.cookies.token
         }
+        // console.log('token',token)
         if(!token) {
                 return res.json({
                         status: 401,
-                        messages: 'Please log in'
+                        messages: 'Please log in. There no token'
                 })
         }
         //decode token
         try {
-         const {id} = jwt.verify(token, 'abc') as JwtPayload
+         const {id} = await jwt.verify(token, JWT_SECRET) as JwtPayload
+       
          const userFound = await User.findById(id)
+        
          if(userFound) {
                 const userReq = userFound as PayloadType
                 req.user  = userReq
-              
          }       
         } catch(error) {
-         return next(res.json({
+         return res.json({
                         status: 401,
-                        messages: 'Please log in'
-                }))   
+                        messages: 'Please log in. Cannot  find users'
+                }) 
         }
         next()
 }
 
 export const authorize = (...roles: any) => {
         return (req: Request,res: Response,next: NextFunction) => {
+             
                 if(!roles.includes((req.user as PayloadType).role)) {
                         return res.status(403).json({
                             messages: 'You do not have authority !!!!'

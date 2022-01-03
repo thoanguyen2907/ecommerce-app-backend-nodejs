@@ -5,7 +5,6 @@
     "color" : ["black","blue"],
     "price" : 120,
     "description":"At CELINE the idea of Parisian chic, with savoir-faire and the finest quality",
-    "like" : 30,
     "category" : "61ad29d4520b1921c2c33fb8",
     "productImg": "https://i.postimg.cc/N0HsJK7d/celine-01.jpg",
     "virtualImg": "https://i.postimg.cc/bNwzXC9D/v1.png", 

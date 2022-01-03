@@ -20,14 +20,19 @@ const login = async (email: any, password: any, res: any) => {
 }
 export const forgotPassword =  async (item: any) => { 
   //find email of user in user model 
-  const user = await User.findOne({email: item.email})      
+  const user = await User.findOne({email: item.email})   
+  
   // user exist     
   if(user) {
+   
       //send reset token to user and save in database
       const resetToken = await user.resetPassword()
+
       await user.save()
+     
+      console.log(user) 
       //create reset URL 
-      const resetURL = `/api/v1/resetPassword/${resetToken}`
+      const resetURL = `http://localhost:3000/resetPassword/${resetToken}`
       const message = `Access the link to change password : ${resetURL}`
       try {
           await sendEmail({
@@ -37,6 +42,7 @@ export const forgotPassword =  async (item: any) => {
           })
           return 'Please check your email !!!'
       } catch(error) {
+        console.log(error)
           user.resetPassToken = undefined,
           user.resetPassTokenExp = undefined,
           await user.save()

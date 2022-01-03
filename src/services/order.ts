@@ -5,16 +5,7 @@ import { NotFoundError } from '../helpers/apiError'
 const create = async (order: OrderDocument): Promise<OrderDocument> => {
   return order.save()
 }
-// const updateQuantityProductOrder = (productList:  ProductInCart[],  indexProductOrder: number,
-//   order: OrderDocument): Promise<OrderDocument> => {
-//   if(productList[indexProductOrder].quantity) {
-//     productList[indexProductOrder].quantity += 1
-//     //  console.log( productList[indexProductOrder].quantity)
-     
-//   }
-//   return order.save()
 
-//}
 
 const findById = async (orderId: string): Promise<OrderDocument> => {
 
