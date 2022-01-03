@@ -4,6 +4,7 @@ import mongoose, { Document, Model } from 'mongoose'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
+import { JWT_SECRET } from '../util/secrets'
 
 export type UserDocument = Document & {
   lastName: string
@@ -72,7 +73,7 @@ export interface UserModel extends Model<UserDocument> {
 }
 
 userSchema.methods.getJwtToken = function () {
-  return jwt.sign({ id: this._id }, 'abc', {
+  return jwt.sign({ id: this._id }, JWT_SECRET, {
     expiresIn: '10h',
   })
 }

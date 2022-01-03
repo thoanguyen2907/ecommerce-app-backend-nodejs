@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../util/secrets'
 import User from '../models/User'
 interface JwtPayload {
         id: string
@@ -29,10 +30,10 @@ export const protect =  async  (req: Request,res: Response,next: NextFunction) =
         }
         //decode token
         try {
-         const {id} = await jwt.verify(token, 'abc') as JwtPayload
-         console.log('id', id)
+         const {id} = await jwt.verify(token, JWT_SECRET) as JwtPayload
+       
          const userFound = await User.findById(id)
-        console.log('userFound', userFound)
+        
          if(userFound) {
                 const userReq = userFound as PayloadType
                 req.user  = userReq

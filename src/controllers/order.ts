@@ -100,7 +100,10 @@ export const updateOrder = async (
     const update = req.body
     const orderId = req.params.orderId
     const updatedCategory = await OrderService.update(orderId, update)
-    res.json(updatedCategory)
+    res.status(200).json( {
+      success: true,
+      updatedCategory
+    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -117,7 +120,6 @@ export const deleteOrderById = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.params.orderId)
     await OrderService.deleteOrder(req.params.orderId)
     res.status(204).end()
   } catch (error) {
@@ -129,14 +131,18 @@ export const deleteOrderById = async (
   }
 }
 
-// GET /movies/:movieId
+// GET /orders/:orderId
 export const findOrderById = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    res.json(await OrderService.findById(req.params.orderId))
+    const data = await OrderService.findById(req.params.orderId);
+    res.status(200).json({
+      success: true, 
+      data
+    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -173,7 +179,11 @@ export const findOrderByUserId = async (
   next: NextFunction
 ) => {
   try {
-     res.json(await OrderService.getOrderByUserId(req.params.userId))
+    const data = await OrderService.getOrderByUserId(req.params.userId)
+     res.status(200).json({
+       success: true, 
+       data
+     })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))

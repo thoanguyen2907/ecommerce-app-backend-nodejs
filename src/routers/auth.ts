@@ -23,8 +23,8 @@ registerUser)
 router.post('/login', loginUser)
 router.get('/me', protect, aboutMe)
 router.get('/logout', protect, logout)
-router.post('/forgotPassword', protect, forgotPasswordUser)
-router.post('/resetPassword/:resetToken', protect, resetPasswordUser)
+router.post('/forgotPassword', forgotPasswordUser)
+router.post('/resetPassword/:resetToken', resetPasswordUser)
 router.post('/google-login', loginGoogle)
 
 
