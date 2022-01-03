@@ -15,7 +15,7 @@
   "scripts": {
     "start": "npm run serve",
     "devStart": "node dist/server.ts",
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && ts",
     "postinstall": "npm run build-sass && npm run build-ts && npm run lint && npm run copy-static-assets",
     "serve": "node dist/server.js",
     "watch-node": "nodemon dist/server.js",
@@ -48,6 +48,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.13.0",
     "google-auth-library": "^7.10.4",
+    "heroku": "^7.59.2",
     "husky": "^4.2.3",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^10.0.8",
