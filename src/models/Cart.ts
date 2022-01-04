@@ -12,113 +12,15 @@ export type CartDocument = Document & {
 
 const cartSchema = new mongoose.Schema({
   user: {
-    id: {
-        type: String
-      },
-      name: {
-        type: String,
-        required: true,
-        index: true,
-      },
-    
-      category: {
-          ref: 'category',
-          type: String
-      },
-      description: {
-        type: String,
-        index: true,
-      },
-      brand: {
-        type: String,
-        required: true,
-        index: true,
-      },
-      size: {
-        type: [String],
-        required: true,
-        index: true,
-      },
-      color: {
-        type: [String],
-        required: true,
-        index: true,
-      },
-      price: {
-        type: Number,
-        required: true
-      },
-      dislike: {
-        type: Number,
-      },
-      like: {
-        type: Number,
-      },
-      productImg: {
-        type: String,
-        index: true,
-      },
-      popular: {
-        type: Boolean,
-      },
-      newArrival: {
-        type: Boolean,
-      }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users'
   },
-  product: {
-    id: {
-        type: String
-      },
-      name: {
-        type: String,
-        required: true,
-        index: true,
-      },
-    
-      category: {
-          ref: 'category',
-          type: String
-      },
-      description: {
-        type: String,
-        index: true,
-      },
-      brand: {
-        type: String,
-        required: true,
-        index: true,
-      },
-      size: {
-        type: [String],
-        required: true,
-        index: true,
-      },
-      color: {
-        type: [String],
-        required: true,
-        index: true,
-      },
-      price: {
-        type: Number,
-        required: true
-      },
-      dislike: {
-        type: Number,
-      },
-      like: {
-        type: Number,
-      },
-      productImg: {
-        type: String,
-        index: true,
-      },
-      popular: {
-        type: Boolean,
-      },
-      newArrival: {
-        type: Boolean,
-      }
-  },
+  product: 
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'products'
+    }
+,
   quantity: {
   type: Number
 }
