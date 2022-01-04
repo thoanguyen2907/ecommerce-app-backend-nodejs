@@ -20,7 +20,7 @@ const findById = async (categoryId: string): Promise<CategoryDocument> => {
 const findAll = async (query: any): Promise<CategoryDocument[]> => {
 
   const queryFind = {...query}
-   let find: any, select: any, sort: any
+  let find: any, select: any, sort: any
   const removeFields = ['select', 'sort','page','limit']
   removeFields.forEach(param => delete queryFind[param])
   //select fields 
@@ -28,8 +28,10 @@ const findAll = async (query: any): Promise<CategoryDocument[]> => {
   //replace symbol with $
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, find => `$${find}`)
   //parse
-  find = JSON.parse(queryStr)
-
+  if(query.find) {
+    find = JSON.parse(queryStr)
+  }
+  
   if(query.select) {
     select = query.select.split(',').join(' ')
   }
