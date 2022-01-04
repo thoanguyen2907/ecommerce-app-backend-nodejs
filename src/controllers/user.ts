@@ -4,7 +4,7 @@ import User from '../models/User'
 import UserService from '../services/user'
 import { BadRequestError } from '../helpers/apiError'
 import  {validationResult } from 'express-validator'
-import validation from '../validates/products'
+import validation from '../validates/Products'
 // POST /movies
 export const createUser = async (
   req: Request,
