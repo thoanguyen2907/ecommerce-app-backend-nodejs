@@ -19,9 +19,8 @@ const findById = async (orderId: string): Promise<OrderDocument> => {
 }
 
 const findAll = async (query: any): Promise<OrderDocument[]> => {
-
   const queryFind = {...query}
-   let find: any, select: any, sort: any
+  let select: any, sort: any
   const removeFields = ['select', 'sort','page','limit']
   removeFields.forEach(param => delete queryFind[param])
   
@@ -29,9 +28,9 @@ const findAll = async (query: any): Promise<OrderDocument[]> => {
   //replace symbol with $
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, find => `$${find}`)
   //parse
-  if(query.find) {
-    find = JSON.parse(queryStr)
-  }
+
+   const find = JSON.parse(queryStr)
+  
 
   if(query.select) {
     select = query.select.split(',').join(' ')

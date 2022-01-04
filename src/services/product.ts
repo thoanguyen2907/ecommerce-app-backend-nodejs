@@ -20,7 +20,7 @@ const findByCategoryId = async (params: any): Promise<ProductDocument[]> => {
   const categoryId = (params.categoryId) ? params.categoryId : ''
   params = (params.categoryId) ? params.query : params
   const queryFind = {...params}
-  let find: any, select: any, sort: any
+  let select: any, sort: any
   const removeFields = ['select', 'sort','page','limit']
   removeFields.forEach(param => delete queryFind[param])
   
@@ -29,9 +29,9 @@ const findByCategoryId = async (params: any): Promise<ProductDocument[]> => {
   //replace symbol with $
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, find => `$${find}`)
   //parse
-  if(find) {
-    find = JSON.parse(queryStr)
-  }
+
+  let find = JSON.parse(queryStr)
+  
   if(params.select) {
     select = params.select.split(',').join(' ')
   }
@@ -54,9 +54,8 @@ const findByCategoryId = async (params: any): Promise<ProductDocument[]> => {
 }
 
 const findAll = async (query: any): Promise<ProductDocument[]> => {
-
   const queryFind = {...query}
-   let find: any, select: any, sort: any
+   let  select: any, sort: any
   const removeFields = ['select', 'sort','page','limit']
   removeFields.forEach(param => delete queryFind[param])
   
@@ -66,9 +65,8 @@ const findAll = async (query: any): Promise<ProductDocument[]> => {
   //replace symbol with $
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, find => `$${find}`)
   //parse
-  if(query.find) {
-    find = JSON.parse(queryStr)
-  }
+
+   const find = JSON.parse(queryStr)
 
   if(query.select) {
     select = query.select.split(',').join(' ')
