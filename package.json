@@ -14,7 +14,6 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "devStart": "node server.ts",
     "build": "npm run build-ts && npm run lint",
     "serve": "node dist/server.js",
     "watch-node": "nodemon dist/server.js",
