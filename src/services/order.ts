@@ -29,7 +29,9 @@ const findAll = async (query: any): Promise<OrderDocument[]> => {
   //replace symbol with $
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, find => `$${find}`)
   //parse
-  find = JSON.parse(queryStr)
+  if(query.find) {
+    find = JSON.parse(queryStr)
+  }
 
   if(query.select) {
     select = query.select.split(',').join(' ')
