@@ -21,7 +21,9 @@ app.use(express.json())
 app.use(lusca.xframe('SAMEORIGIN'))
 app.use(lusca.xssProtection(true))
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({
+    origin: '*'
+}))
 
 const publicPathDirectory = path.join(__dirname, './public')
 app.use(express.static(publicPathDirectory) )
