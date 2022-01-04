@@ -1,5 +1,5 @@
 import express from 'express'
-import { project } from '../middlewares/auth'
+import { authorize, protect } from '../middlewares/auth'
 import {
   createOrder,
   findOrderById,
@@ -10,20 +10,27 @@ import {
   decreaseQuantity,
   findOrderByUserId
 } from '../controllers/order'
+import  validation from '../validates/Order'
 const router = express.Router()
 
 // Every path we define here will get /api/v1/movies prefix
-router.get('/', project, findAll)
-router.get('/:orderId',project, findOrderById)
+router.get('/', protect, findAll)
+router.get('/:orderId',protect,  authorize('admin'), findOrderById)
 
-router.get('/user/:userId', project, findOrderByUserId)
+router.get('/user/:userId', protect,  authorize('user', 'admin'), findOrderByUserId)
 
-router.put('/:orderId', project, updateOrder)
-router.delete('/:orderId', project, deleteOrderById)
+router.put('/:orderId', protect,  authorize('admin'), updateOrder)
+router.delete('/:orderId', protect,  authorize('user','admin'),  deleteOrderById)
 
-router.post('/', createOrder)
-router.put('/event/increase/:orderId', project, increaseQuantity)
-router.put('/event/decrease/:orderId',project, decreaseQuantity)
+router.post('/', 
+validation.checkUserID(),
+validation.checkProductId(),
+validation.checkSizeOrder(),
+validation.checkColorOrder(),
+createOrder)
+
+router.put('/event/increase/:orderId', protect,  authorize('user','admin'), increaseQuantity)
+router.put('/event/decrease/:orderId',protect,  authorize('user','admin'), decreaseQuantity)
  
 
 export default router

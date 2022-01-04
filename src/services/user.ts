@@ -18,6 +18,18 @@ const findById = async (userId: string): Promise<UserDocument> => {
 const findAll = async (): Promise<UserDocument[]> => {
   return User.find().populate({path: 'orders'}).sort({ name: 1 })
 }
+const findUserToken = async (resetPassToken: any): Promise<UserDocument | null> => {
+  return User.findOne({
+    resetPassToken: resetPassToken,
+     resetPassTokenExp : {$gt: Date.now()}
+  })
+}
+const findUserEmail = async (email: any): Promise<UserDocument | null> => {
+  return User.findOne({
+    email: email
+  })
+}
+
 
 const update = async (
   userId: string,
@@ -50,4 +62,6 @@ export default {
   findAll,
   update,
   deleteUser,
+  findUserToken,
+  findUserEmail
 }

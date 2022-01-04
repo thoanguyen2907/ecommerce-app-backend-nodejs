@@ -4,7 +4,7 @@ import User from '../models/User'
 import UserService from '../services/user'
 import { BadRequestError } from '../helpers/apiError'
 import  {validationResult } from 'express-validator'
-import validation from '../validates/products'
+import validation from '../validates/Products'
 // POST /movies
 export const createUser = async (
   req: Request,
@@ -13,29 +13,33 @@ export const createUser = async (
 ) => {
   try {
     const result = await validationResult(req)
+
     if (!result.isEmpty()) {
       const errors = await result.array()
+     
       const messages = await validation.showErrors(errors)    
       res.status(400).json({
           success : false,
           data : messages
       })
       return        
-    }
-    const { lastName, firstName, email, phone, password } = req.body
-
-    const user = new User({
-      lastName,
-      firstName,
-      email,
-      phone,
-      password,
-      role: 'user'
-    })
-
+    } else {
+      const { lastName, firstName, email, phone, password } = req.body
+      const user = new User({
+        lastName,
+        firstName,
+        email,
+        phone,
+        password,
+        role: 'user'
+      })
     const newUser = await UserService.create(user)
     const token = await newUser.getJwtToken()
-   return res.json({ newUser,token})
+   return res.status(200).json({ 
+     success: true,
+     newUser,
+     token
+    }) }
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -55,7 +59,10 @@ export const updateUser = async (
     const update = req.body
     const userId = req.params.userId
     const updatedUser = await UserService.update(userId, update)
-    return res.json(updatedUser)
+    return res.status(200).json({
+      success: true,
+      updatedUser
+    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -90,7 +97,20 @@ export const findById = async (
   next: NextFunction
 ) => {
   try {
-    res.json(await UserService.findById(req.params.userId))
+    const userData = await UserService.findById(req.params.userId)
+    const data = {
+      _id: userData._id,
+      id: userData.id,
+      lastName: userData.lastName,
+      firstName: userData.firstName,
+      email: userData.email,
+      role: userData.role,
+      orders: userData.orders
+    } 
+    res.status(200).json({
+      success: true,
+      data
+    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -107,7 +127,11 @@ export const findAll = async (
   next: NextFunction
 ) => {
   try {
-    res.json(await UserService.findAll())
+    const data = await UserService.findAll()
+    res.status(200).json({
+      success: true,
+      data
+    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))

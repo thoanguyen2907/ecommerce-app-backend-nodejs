@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express'
 import Order from '../models/Order'
 import OrderService from '../services/order'
 import { BadRequestError } from '../helpers/apiError'
+import { check, validationResult } from 'express-validator'
+import  validation from '../validates/Order'
 
 // POST /movies
 export const createOrder = async (
@@ -11,30 +13,37 @@ export const createOrder = async (
   next: NextFunction
 ) => {
   try {
-    const { user, product} = await req.body
-    const quantity = 1
-
-    const order = new Order({
-      user,
-      product,
-      quantity
-    })
-     const userOrderList = await OrderService.getOrderByUserId(user)
-     console.log(userOrderList)
-
-  //  const productList =  userOrderList.map((item) => {
-  //    return item.product
-  //  })
-  //  console.log(productList)
-  //  productList.findIndex((item) => item.id === product)
-
-    await OrderService.create(order)
-    res.status(200).json({
-      status: 200, 
-      data: order
-    })
-
-  } catch (error) {
+    const { user, products} = await req.body
+    const result = await validationResult(req)
+    if (!result.isEmpty()) {
+      const errors = result.array()
+      const messages = await validation.showErrors(errors)    
+     
+      return  res.status(400).json({
+          success : false,
+          data : messages
+      })
+    
+    } else {
+      const order = new Order({user, products})
+      const userOrderList = await OrderService.getOrderByUserId(user)
+    const productOrder = await userOrderList.find((item) => item.products.product._id == products.product)
+    if(!productOrder) {
+       await OrderService.create(order)
+       return res.status(200).json({
+         status: 200, 
+         data: order
+       })
+     } else { 
+     const orderUpdateQuantity = await OrderService.updateQuantityProductOrder(productOrder._id)
+     return res.status(200).json({
+       status: 200, 
+       data: orderUpdateQuantity
+     })
+      }
+    }
+   }
+   catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
     } else {
@@ -91,7 +100,10 @@ export const updateOrder = async (
     const update = req.body
     const orderId = req.params.orderId
     const updatedCategory = await OrderService.update(orderId, update)
-    res.json(updatedCategory)
+    res.status(200).json( {
+      success: true,
+      updatedCategory
+    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -108,7 +120,6 @@ export const deleteOrderById = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.params.orderId)
     await OrderService.deleteOrder(req.params.orderId)
     res.status(204).end()
   } catch (error) {
@@ -120,14 +131,18 @@ export const deleteOrderById = async (
   }
 }
 
-// GET /movies/:movieId
+// GET /orders/:orderId
 export const findOrderById = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    res.json(await OrderService.findById(req.params.orderId))
+    const data = await OrderService.findById(req.params.orderId);
+    res.status(200).json({
+      success: true, 
+      data
+    })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -164,7 +179,11 @@ export const findOrderByUserId = async (
   next: NextFunction
 ) => {
   try {
-     res.json(await OrderService.getOrderByUserId(req.params.userId))
+    const data = await OrderService.getOrderByUserId(req.params.userId)
+     res.status(200).json({
+       success: true, 
+       data
+     })
   } catch (error) {
     if (error instanceof Error && error.name == 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
