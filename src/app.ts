@@ -16,16 +16,18 @@ const app = express()
 app.set('port', process.env.PORT || 5000)
 
 // Use common 3rd-party middlewares
+app.use(cors({origin: '*'}))
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+})
 app.use(compression())
 app.use(express.json())
 app.use(lusca.xframe('SAMEORIGIN'))
 app.use(lusca.xssProtection(true))
 app.use(cookieParser())
-app.use(cors({origin: '*'}))
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    next()
-  })
+
+
 
 const publicPathDirectory = path.join(__dirname, './public')
 app.use(express.static(publicPathDirectory) )
