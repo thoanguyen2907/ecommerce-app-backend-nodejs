@@ -16,6 +16,8 @@ const prod = ENVIRONMENT === 'production' // Anything else is treated as 'dev'
 
 export const JWT_SECRET = process.env['JWT_SECRET'] as string
 
+export const audience = process.env['audience'] as string
+
 export const OAuth2ClientId = process.env['OAuth2ClientId'] as string
 
 export const MONGODB_URI = (

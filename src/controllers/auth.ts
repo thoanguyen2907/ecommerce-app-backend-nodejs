@@ -9,7 +9,7 @@ import validation from '../validates/Products'
 import crypto from 'crypto'
 import { sendEmail } from '../util/sendEmail'
 import {OAuth2Client} from 'google-auth-library'
-import { JWT_SECRET, OAuth2ClientId } from '../util/secrets'
+import { audience, JWT_SECRET, OAuth2ClientId } from '../util/secrets'
 
 interface JwtPayload {
   id: string
@@ -151,7 +151,7 @@ export const loginGoogle = async (
   res: Response,
   next: NextFunction) => {
     const {tokenId} = await req.body
-    client.verifyIdToken({idToken: tokenId, audience: '627197289438-q9pagstkv3sk03pbssfisjqgrgidv7lo.apps.googleusercontent.com'}).then(async (response) => {
+    client.verifyIdToken({idToken: tokenId, audience: audience}).then(async (response) => {
      
         if (response.getPayload() && response.getPayload()?.email_verified) {
             const email =  response.getPayload()?.email
