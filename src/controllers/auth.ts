@@ -152,7 +152,6 @@ export const loginGoogle = async (
   next: NextFunction) => {
     const {tokenId} = await req.body
     client.verifyIdToken({idToken: tokenId, audience: audience}).then(async (response) => {
-     
         if (response.getPayload() && response.getPayload()?.email_verified) {
             const email =  response.getPayload()?.email
             const name =  response.getPayload()?.name

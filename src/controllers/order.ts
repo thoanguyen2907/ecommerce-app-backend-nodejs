@@ -138,7 +138,7 @@ export const findOrderById = async (
   next: NextFunction
 ) => {
   try {
-    const data = await OrderService.findById(req.params.orderId);
+    const data = await OrderService.findById(req.params.orderId)
     res.status(200).json({
       success: true, 
       data

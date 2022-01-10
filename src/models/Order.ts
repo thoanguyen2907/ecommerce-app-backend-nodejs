@@ -10,7 +10,8 @@ export type ProductInCart = {
 
 export type OrderDocument = Document & {
   user: string,
-  products:  ProductInCart
+  products:  ProductInCart, 
+  create_at: Date
 }
 
 const orderSchema = new mongoose.Schema({
@@ -35,6 +36,10 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+   }, 
+   create_at: {
+    type: Date,
+    required: true,
    }
 
 })

@@ -104,7 +104,7 @@ export const voteProduct = async (
   next: NextFunction
 ) => {
   try {
-    const data = await ProductService.event({'id' :req.params.productId,'type' :  req.params.type});
+    const data = await ProductService.event({'id' :req.params.productId,'type' :  req.params.type})
     res.status(200).json({
       success: true,
       data
